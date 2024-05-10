@@ -11,13 +11,14 @@ LDLIBS += -lrt -lpthread
 
 SOURCES = menu.c mzapo_phys.c mzapo_parlcd.c serialize_lock.c#change_me.c mzapo_phys.c mzapo_parlcd.c serialize_lock.c
 SOURCES += font_prop14x16.c font_rom8x16.c
+SOURCES += parlcd.cpp
 TARGET_EXE = Mandelbrot
 TARGET_IP ?= 192.168.223.106
 ifeq ($(TARGET_IP),)
 ifneq ($(filter debug run,$(MAKECMDGOALS)),)
 $(warning The target IP address is not set)
 $(warning Run as "TARGET_IP=192.168.202.xxx make run" or modify Makefile)
-TARGET_IP ?= 192.168.202.xxx
+TARGET_IP ?= 192.168.135.14
 endif
 endif
 TARGET_DIR ?= /tmp/$(shell whoami)
