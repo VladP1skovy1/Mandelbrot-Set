@@ -1,8 +1,8 @@
 #include "scene.h"
 
     
-void Scene::add_component(std::unique_ptr<Component> comp){
-    components.push_back(comp);
+void Scene::add_component(Component* comp){
+    components.push_back(std::unique_ptr<Component>(comp));
 }
 
 void Scene::render(){   

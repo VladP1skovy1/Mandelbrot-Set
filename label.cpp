@@ -4,6 +4,7 @@ Label::Label(uint16_t x, uint16_t y, uint16_t height, uint16_t width, std::strin
 Label(x, y, width, height)
 {
     this->text_ = text;
+    this->font_size_ = 1;
 }
 
 void Label::set_text(std::string text)
@@ -36,7 +37,7 @@ void Label::render()
   {
     for (size_t j = 0; j < this->get_width(); j++)
     {
-      draw_pixel(i + x_offset, j + y_offset, 0x07e0, parlcd);
+      draw_pixel(j + x_offset, i + y_offset, 0x07e0, parlcd);
     }
     
   }

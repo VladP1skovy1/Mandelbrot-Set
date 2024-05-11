@@ -8,20 +8,16 @@ Component::Component()
     this->height = 0;
 }
 
-Component::Component(uint16_t x, uint16_t y)
+Component::Component(uint16_t x, uint16_t y) : Component()
 {
-    this->width = 0;
-    this->height = 0;
     this->x = x;
     this->y = y;
 }
 
-Component::Component(uint16_t x, uint16_t y, uint16_t width, uint16_t height)
+Component::Component(uint16_t x, uint16_t y, uint16_t width, uint16_t height) : Component(x, y)
 {
     this->width = width;
     this->height = height;
-    this->x = x;
-    this->y = y;
 }
 
 uint16_t Component::get_pos_x() const

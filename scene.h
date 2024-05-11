@@ -1,3 +1,4 @@
+#pragma once
 #include <memory>
 #include <vector>
 #include "component.h"
@@ -7,7 +8,7 @@ private:
     std::vector<std::unique_ptr<Component>>components;
 
 public:    
-    void add_component(std::unique_ptr<Component> comp);
+    void add_component(Component* comp);
 
     void render();
 

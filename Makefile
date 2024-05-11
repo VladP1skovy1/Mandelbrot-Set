@@ -11,7 +11,7 @@ LDLIBS += -lrt -lpthread
 
 SOURCES = mzapo_phys.c mzapo_parlcd.c serialize_lock.c#change_me.c mzapo_phys.c mzapo_parlcd.c serialize_lock.c
 SOURCES += font_prop14x16.c font_rom8x16.c
-SOURCES += text_utilities.cpp parlcd.cpp component.cpp label.cpp
+SOURCES += text_utilities.cpp parlcd.cpp component.cpp label.cpp scene.cpp scene_builder.cpp
 SOURCES += menu.cpp
 TARGET_EXE = Mandelbrot
 TARGET_IP ?= 192.168.223.106
