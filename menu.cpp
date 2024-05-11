@@ -16,12 +16,13 @@
 #include "parlcd.h"
 #include "scene.h"
 #include "scene_builder.h"
+#include "render_controller.h"
  
 #define M_PI 3.1415
  
 
 int main(int argc, char *argv[]) {
-  ParLCD* parlcd = ParLCD::GetInstance();
+  RenderController* rnd_ct = RenderController::get_instance();
 
 
 //sleep(5);
@@ -31,11 +32,10 @@ int main(int argc, char *argv[]) {
   struct timespec loop_delay = 
     {.tv_sec = 0, .tv_nsec = 60 * 1000 * 1000};
   Label* example = new Label(0,0,150,200,"example");
-  example->set_color(233);
+  Scene* scene = SceneBuilder::create_menu_scene();
   while(1) {
-  example->set_text(example->get_text() + "1");
-  example->render();
-  parlcd->update();
+    scene->render();
+  rnd_ct->render();
   //clock_nanosleep(CLOCK_MONOTONIC, 0, &loop_delay, NULL);
   sleep(1);
   }

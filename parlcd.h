@@ -1,21 +1,17 @@
 #pragma once
-#include <string.h>
-#include <cstdlib>
+#include <stdlib.h>
 #include "mzapo_regs.h"
 #include "mzapo_phys.h"
 #include "mzapo_parlcd.h"
 
-#define WIDTH 480
-#define HEIGHT 320
+#define PARLCD_WIDTH 480
+#define PARLCD_HEIGHT 320
 
 class ParLCD
 {
 private:
     static ParLCD* instance;
 
-    int width;
-    int height;
-    unsigned short *fb;
     unsigned char* mem_base;
 protected:
     ParLCD();
@@ -25,10 +21,6 @@ public:
     void operator=(const ParLCD&) = delete;
 
     static ParLCD* GetInstance();
-    int get_width() const;
-    int get_height() const;
-    unsigned short* get_buffer() const;
-    void update();
-    void get_red();
+    void update(unsigned short* fb, int len);
     ~ParLCD();
 };

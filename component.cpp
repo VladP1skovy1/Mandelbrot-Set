@@ -1,5 +1,7 @@
 #include "component.h"
 
+Component::RenderHandler Component::render_handler = nullptr;
+
 Component::Component()
 {
     this->x = 0;
@@ -44,4 +46,16 @@ uint16_t Component::get_height() const
 void Component::set_color(uint16_t color)
 {
     this->color = color;
+}
+
+void Component::set_render_handler(void (*render_handler)(Component *))
+{
+    Component::render_handler = render_handler;
+}
+
+void Component::render()
+{
+    if(this->render_handler) {
+        this->render_handler(this);
+    }
 }

@@ -1,6 +1,5 @@
 #pragma once
 #include "component.h"
-#include "text_utilities.h"
 #include <string>
 
 class Label : public Component
@@ -8,6 +7,8 @@ class Label : public Component
 private:
     uint16_t font_size_;
     std::string text_;
+    static RenderHandler render_handler;
+    
 public:
     // ctors
     using Component::Component;
@@ -16,6 +17,7 @@ public:
     void set_text(std::string text);
     void set_font_size(uint16_t font_sizes);
     void set_color(uint16_t color);
+    static void set_render_handler(void (*render_handler)(Component*));
     // getters
     std::string get_text() const;
     uint16_t get_font_size() const;

@@ -1,5 +1,7 @@
 #include "label.h"
 
+Component::RenderHandler Label::render_handler = nullptr;
+
 Label::Label(uint16_t x, uint16_t y, uint16_t height, uint16_t width, std::string text) :
 Label(x, y, width, height)
 {
@@ -17,6 +19,10 @@ void Label::set_font_size(uint16_t font_size)
     this->font_size_ = font_size;
 }
 
+void Label::set_render_handler(void (*render_handler)(Component *))
+{
+    Label::render_handler = render_handler;
+}
 
 std::string Label::get_text() const
 {
@@ -30,24 +36,5 @@ uint16_t Label::get_font_size() const
 
 void Label::render()
 {
-  std::string text = this->get_text();
-  int x_offset = this->get_pos_x();
-  int y_offset = this->get_pos_y();
-  ParLCD* parlcd = ParLCD::GetInstance();
-  for (size_t i = 0; i < this->get_height(); i++)
-  {
-    for (size_t j = 0; j < this->get_width(); j++)
-    {
-      draw_pixel(j + x_offset, i + y_offset, 0x07e0, parlcd);
-    }
-    
-  }
-  
-
-  int scale = this->get_font_size();
-
-  for (int i = 0; i < text.size(); i++) {
-    draw_char(x_offset, y_offset, 2, text[i], color, parlcd);
-    x_offset += (char_width(text[i]) * scale + SPACING);
-  }
+  this->render_handler(this);
 }

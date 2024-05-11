@@ -2,6 +2,7 @@
 #include <inttypes.h>
 #include "colors.h"
 
+
 class Component
 {
 protected:
@@ -11,7 +12,9 @@ protected:
     uint16_t height;
     uint16_t color;
 
+
 public:
+    typedef void (*RenderHandler)(Component*);
     // ctors
     Component();
     Component(uint16_t x, uint16_t y);
@@ -26,8 +29,11 @@ public:
 
     //setter
     void set_color(uint16_t color);
+    static void set_render_handler(void (*render_handler)(Component*));
 
     // MUST BE IMPLEMENTED IN INHERITED CLASSES
-    virtual void render() {};
+    virtual void render();
     ~Component() {};
+private:
+    static RenderHandler render_handler;
 };
