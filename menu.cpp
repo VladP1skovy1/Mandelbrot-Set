@@ -31,6 +31,7 @@ int main(int argc, char *argv[]) {
   struct timespec loop_delay = 
     {.tv_sec = 0, .tv_nsec = 60 * 1000 * 1000};
   Label* example = new Label(0,0,150,200,"example");
+  example->set_color(233);
   while(1) {
   example->set_text(example->get_text() + "1");
   example->render();

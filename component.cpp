@@ -6,6 +6,7 @@ Component::Component()
     this->y = 0;
     this->width = 0;
     this->height = 0;
+    this->color = COLORS::BLACK;
 }
 
 Component::Component(uint16_t x, uint16_t y) : Component()
@@ -38,4 +39,9 @@ uint16_t Component::get_width() const
 uint16_t Component::get_height() const
 {
     return height;
+}
+
+void Component::set_color(uint16_t color)
+{
+    this->color = color;
 }

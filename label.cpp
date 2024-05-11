@@ -17,6 +17,7 @@ void Label::set_font_size(uint16_t font_size)
     this->font_size_ = font_size;
 }
 
+
 std::string Label::get_text() const
 {
     return text_;
@@ -46,7 +47,7 @@ void Label::render()
   int scale = this->get_font_size();
 
   for (int i = 0; i < text.size(); i++) {
-    draw_char(x_offset, y_offset, 2, text[i], 0xf800, parlcd);
+    draw_char(x_offset, y_offset, 2, text[i], color, parlcd);
     x_offset += (char_width(text[i]) * scale + SPACING);
   }
 }

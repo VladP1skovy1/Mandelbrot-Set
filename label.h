@@ -15,6 +15,7 @@ public:
     // setters
     void set_text(std::string text);
     void set_font_size(uint16_t font_sizes);
+    void set_color(uint16_t color);
     // getters
     std::string get_text() const;
     uint16_t get_font_size() const;
