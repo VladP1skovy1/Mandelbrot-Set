@@ -1,17 +1,14 @@
-#include <memory>
-#include <vector>
-#include "component.h"
+#include "scene.h"
 
-class Scene{
-private:
-    std::vector<std::unique_ptr<Component>>components;
-
-public:
     
-    void add_component(std::unique_ptr<Component> comp){
-        components.push_back(comp);
+void Scene::add_component(std::unique_ptr<Component> comp){
+    components.push_back(comp);
+}
+
+void Scene::render(){   
+    for (int i = 0; i < components.size(); i++)
+    {
+        components[i]->render();
     }
-
-
-};
+}
 

@@ -9,5 +9,7 @@ private:
 public:    
     void add_component(std::unique_ptr<Component> comp);
 
+    void render();
+
 };
 

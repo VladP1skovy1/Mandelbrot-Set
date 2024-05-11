@@ -1,4 +1,5 @@
-#include "scene.h" 
+#include "scene.h"
+#include "label.h"
 
 class SceneBuilder {
 public:
