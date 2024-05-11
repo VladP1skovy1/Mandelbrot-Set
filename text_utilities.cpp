@@ -1,23 +1,31 @@
-#include "render_controller.h"
+#include "text_utilities.h"
 
-void RenderController::draw_pixel(int x, int y, unsigned short color)
-{ 
-    if (x >= 0 && x < width && y >= 0 && y < height) {
+const font_descriptor_t *fdes = &font_winFreeSystem14x16;
+
+void draw_pixel(int x, int y,  unsigned short color, 
+                    ParLCD* parlcd) {
+    int height = parlcd->get_height();
+    int width = parlcd->get_width();
+    if (x >= 0 && x < width && 
+        y >= 0 && y < height) {
+        unsigned short* fb = parlcd->get_buffer();
         fb[x + width * y] = color;
     }
 }
 
-void RenderController::draw_pixel_big(int x, int y, int scale, unsigned short color)
+void draw_pixel_big(int x, int y, int scale, unsigned short color, 
+                        ParLCD* parlcd)
 {
     int i, j;
     for (i = 0; i < scale; i++) {
         for (j = 0; j < scale; j++) {
-            draw_pixel(x + i, y + j, color);
+            draw_pixel(x + i, y + j, color, 
+                            parlcd);
         }
     }
 }
 
-int RenderController::char_width(int ch)
+int char_width(int ch)
 {
     int width;
     if (!fdes->width) {
@@ -29,7 +37,8 @@ int RenderController::char_width(int ch)
     return width;
 }
 
-void RenderController::draw_char(int x, int y, int scale, char ch, unsigned short color)
+void draw_char(int x, int y, int scale, char ch, unsigned short color,
+                 ParLCD* parlcd)
 {
     int w = char_width(ch);
     const font_bits_t *ptr;
@@ -52,27 +61,12 @@ void RenderController::draw_char(int x, int y, int scale, char ch, unsigned shor
             {
                 if ((val & 0x8000) != 0)
                 {
-                    draw_pixel_big(x + scale * j, y + scale * i, scale, color);
+                    draw_pixel_big(x + scale * j, y + scale * i, scale, color, 
+                                        parlcd);
                 }
                 val <<= 1;
             }
             ptr++;
         }
     }
-}
-
-RenderController::RenderController(int width, int height)
-{
-    fb = new unsigned short[width * height * 2];
-    fdes = &font_winFreeSystem14x16;
-}
-
-RenderController::~RenderController()
-{
-    if(!fb) delete fb;
-}
-
-void RenderController::render_label(Label *lbl)
-{
-    
 }

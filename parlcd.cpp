@@ -1,4 +1,7 @@
 #include "parlcd.h"
+#include <stdio.h>
+
+ParLCD* ParLCD::instance;
 
 ParLCD::ParLCD()
 {
@@ -8,18 +11,38 @@ ParLCD::ParLCD()
     }
     parlcd_hx8357_init(mem_base);
     parlcd_write_cmd(mem_base, 0x2c);
+    this->width = WIDTH;
+    this->height = HEIGHT;
+    fb = new unsigned short[width * height];
 }
 
 ParLCD *ParLCD::GetInstance()
 {
     if(instance == nullptr) {
-        instance = new ParLCD();
+        ParLCD::instance = new ParLCD();
     }
     return instance;
 }
 
-void ParLCD::update(unsigned char *fb, int len)
+int ParLCD::get_width() const
 {
-    memcpy(mem_base + PARLCD_REG_DATA_o, fb, len);
+    return width;
+}
+
+int ParLCD::get_height() const
+{
+    return height;
+}
+
+unsigned short *ParLCD::get_buffer() const
+{
+    return fb;
+}
+
+void ParLCD::update()
+{
     parlcd_write_cmd(mem_base, 0x2c);
+    for (size_t i = 0; i < width * height; i++) {
+        *(volatile uint16_t*)(mem_base + PARLCD_REG_DATA_o) = fb[i];
+    }
 }

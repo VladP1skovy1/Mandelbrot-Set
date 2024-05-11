@@ -1,5 +1,6 @@
 #pragma once
 #include "component.h"
+#include "text_utilities.h"
 #include <string>
 
 class Label : public Component
@@ -19,5 +20,4 @@ public:
     uint16_t get_font_size() const;
     // virtual method implementation
     void render();
-    ~Label();
 };
