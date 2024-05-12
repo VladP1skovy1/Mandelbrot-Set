@@ -25,6 +25,7 @@ public:
     uint16_t get_pos_y() const;
     uint16_t get_width() const;
     uint16_t get_height() const;
+    uint16_t get_color() const;
     
 
     //setter

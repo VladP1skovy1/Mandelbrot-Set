@@ -43,6 +43,11 @@ uint16_t Component::get_height() const
     return height;
 }
 
+uint16_t Component::get_color() const
+{
+    return color;
+}
+
 void Component::set_color(uint16_t color)
 {
     this->color = color;

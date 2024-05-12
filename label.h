@@ -16,7 +16,6 @@ public:
     // setters
     void set_text(std::string text);
     void set_font_size(uint16_t font_sizes);
-    void set_color(uint16_t color);
     static void set_render_handler(void (*render_handler)(Component*));
     // getters
     std::string get_text() const;

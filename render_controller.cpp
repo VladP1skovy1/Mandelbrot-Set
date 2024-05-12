@@ -91,11 +91,22 @@ void RenderController::render_label(Component* comp)
     }
 
     int scale = lbl->get_font_size();
-    int text_size =  text.size();
+    int text_length =  text.size();
+    int text_width = 0;
+    int text_height = 16 * scale;
+    for (int i = 0; i < text_length; i++)
+    {
+        text_width += char_width(text[i] + 2) * scale;
+    }
 
-    for (int i = 0; i < text_size; i++) {
-      ren_con->draw_char(x_offset, y_offset, 2, text[i], 0xffff);
-      x_offset += (char_width(text[i]) * scale + 5);
+    int color = comp->get_color();
+    x_offset = x_offset - text_width/2 + lbl_width/2;
+    y_offset = y_offset - text_height/2 + lbl_width/2;
+    
+
+    for (int i = 0; i < text_length; i++) {
+      ren_con->draw_char(x_offset, y_offset, scale, text[i], color);
+      x_offset += (char_width(text[i] + 2) * scale);
     }
 }
 

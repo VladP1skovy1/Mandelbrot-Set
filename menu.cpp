@@ -33,6 +33,7 @@ int main(int argc, char *argv[]) {
     {.tv_sec = 0, .tv_nsec = 60 * 1000 * 1000};
   Label* example = new Label(0,0,150,200,"example");
   Scene* scene = SceneBuilder::create_menu_scene();
+  example->set_color(BLUE);
   while(1) {
     scene->render();
   rnd_ct->render();
