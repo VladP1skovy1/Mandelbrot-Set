@@ -7,7 +7,7 @@
 #include <time.h>
 #include <unistd.h>
 #include <math.h>
- 
+
 #include "mzapo_parlcd.h"
 #include "mzapo_phys.h"
 #include "mzapo_regs.h"
@@ -41,7 +41,7 @@ int main(int argc, char *argv[]) {
   sleep(1);
   }
   printf("Goodbye\n");
- 
+
   return 0;
 }
 
