@@ -1,6 +1,9 @@
 #include "scene.h"
 
-    
+Scene::Scene(){
+    this->clickHandler = nullptr;
+    this->turnHandler = nullptr;
+}
 void Scene::add_component(Component* comp){
     components.push_back(std::unique_ptr<Component>(comp));
 }
@@ -11,4 +14,7 @@ void Scene::render(){
         components[i]->render();
     }
 }
+
+
+
 
