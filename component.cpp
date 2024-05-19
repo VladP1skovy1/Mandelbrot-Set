@@ -8,7 +8,8 @@ Component::Component()
     this->y = 0;
     this->width = 0;
     this->height = 0;
-    this->color = COLORS::BLACK;
+    this->color = COLORS::WHITE;
+    this->bg_color = (color565_t)(COLORS::CYAN)/2;
 }
 
 Component::Component(uint16_t x, uint16_t y) : Component()
@@ -43,14 +44,34 @@ uint16_t Component::get_height() const
     return height;
 }
 
-uint16_t Component::get_color() const
+color565_t Component::get_color() const
 {
     return color;
 }
 
-void Component::set_color(uint16_t color)
+color565_t Component::get_bg_color() const
+{
+    return bg_color;
+}
+
+bool Component::is_active() const
+{
+    return is_active_;
+}
+
+void Component::set_bg_color(color565_t color)
+{
+    this->bg_color = color;
+}
+
+void Component::set_color(color565_t color)
 {
     this->color = color;
+}
+
+void Component::set_active(bool active)
+{
+    this->is_active_ = active;
 }
 
 void Component::set_render_handler(void (*render_handler)(Component *))

@@ -10,8 +10,9 @@ protected:
     uint16_t y;
     uint16_t width;
     uint16_t height;
-    uint16_t color;
-
+    color565_t color;
+    color565_t bg_color;
+    bool is_active_ = false;
 
 public:
     typedef void (*RenderHandler)(Component*);
@@ -25,11 +26,14 @@ public:
     uint16_t get_pos_y() const;
     uint16_t get_width() const;
     uint16_t get_height() const;
-    uint16_t get_color() const;
-    
+    color565_t get_color() const;
+    color565_t get_bg_color() const;
+    bool is_active() const;
 
     //setter
-    void set_color(uint16_t color);
+    void set_bg_color(color565_t color);
+    void set_color(color565_t color);
+    void set_active(bool active);
     static void set_render_handler(void (*render_handler)(Component*));
 
     // MUST BE IMPLEMENTED IN INHERITED CLASSES
