@@ -1,9 +1,53 @@
 #include "scene_builder.h"
 
-Scene* SceneBuilder::create_menu_scene(){
+Scene *SceneBuilder::create_scene(int scene_id)
+{
+    Scene *scene = nullptr;
+    switch ((STATES)scene_id)
+    {
+    case MENU:
+        scene = create_menu_scene();
+        break;
+    case SETTINGS:
+        scene = create_settings_scene();
+        break;
+    case CHANGE_COLOR:
+        scene = create_change_color_scene();
+        break;
+    case CHANGE_VALUE:
+        scene = create_change_value_scene();
+        break;
+    case CHANGE_SET:
+        scene = create_change_set_scene();
+        break;
+    case MAIN:
+        scene = create_main_scene();
+        break;
+    default:
+        break;
+    }
+    return scene;
+}
+
+Scene *SceneBuilder::create_menu_scene()
+{
     Scene* scene = new Scene();
-    scene->add_component(new Label(40, 150, 40, 200, "Mandelbrot Set"));
-    scene->add_component(new Label(40, 190, 30, 230, "press to continiue"));
+    Label* lbl = new Label(160, 60, 40, 200, "Set Generator");
+    Label* lbl2 = new Label(140, 120, 40, 200, "Settings");
+    lbl->set_color(WHITE);
+    lbl2->set_color(WHITE);
+    lbl->set_font_size(3);
+    lbl2->set_font_size(3);
+    scene->add_component(lbl);
+    scene->add_component(lbl2);
+    scene->set_press_handler([](int knob){
+        if(knob == 1) {
+            printf("Knob pressed: %d\n", knob);
+            shared_data.scene = SETTINGS;
+            printf("Scene changed to %d\n", shared_data.scene);
+        }
+    });
+    scene->set_active_component(0);
     return scene;
 }
 
@@ -13,24 +57,58 @@ Scene* SceneBuilder::create_settings_scene(){
     scene->add_component(new Label(40, 130, 30, 200, "Change fractal"));
     scene->add_component(new Label(40, 160, 30, 200, "Change color"));
     scene->add_component(new Label(40, 190, 30, 200, "Change C value"));
+    scene->set_press_handler([](int knob) {
+        if(knob == 2) {
+            switch (shared_data.active_component_index)
+            {
+            case 0:
+                shared_data.scene = CHANGE_SET;
+                break;
+            case 1:
+                shared_data.scene = CHANGE_COLOR;
+                break;
+            case 2:
+                shared_data.scene = CHANGE_VALUE;
+                break;
+            default:
+                break;
+            }
+        }
+    });
+    scene->set_turn_handler([](int knob, int old_value, int new_value){
+        if(knob == 2) {
+            shared_data.active_component_index = ((new_value / 16) % 3);
+        }
+    });
+    scene->set_active_component(0);
     return scene;
 }
 
 Scene* SceneBuilder::create_change_color_scene(){
     
     Scene* scene = new Scene();
-    scene->add_component(new Label(220, 140, 40, 40, " "));
+    scene->add_component(new Label(220, 140, 40, 40, "Change color"));
+    scene->set_press_handler([](int knob){
+        if(knob == 0) {
+            shared_data.scene = SETTINGS;
+        }
+    });
     return scene;
 }
 
 Scene* SceneBuilder::create_change_value_scene(){
 
     Scene* scene = new Scene();
-    scene->add_component(new Label(220, 140, 40, 40, " "));
+    scene->add_component(new Label(220, 140, 40, 40, "Change value"));
+    scene->set_press_handler([](int knob){
+        if(knob == 0) {
+            shared_data.scene = SETTINGS;
+        }
+    });
     return scene;
 }
 
-Scene* SceneBuilder::create_choose_set_scene(){
+Scene* SceneBuilder::create_change_set_scene(){
 
     Scene* scene = new Scene();
     scene->add_component(new Label(40, 100, 30, 200, "Mandelbrto Set"));
@@ -38,6 +116,17 @@ Scene* SceneBuilder::create_choose_set_scene(){
     scene->add_component(new Label(40, 160, 30, 200, "Koch curve"));
     scene->add_component(new Label(40, 190, 30, 200, "Sierpinski carpet"));
     scene->add_component(new Label(40, 210, 30, 200, "Menger sponge"));
+    scene->set_press_handler([](int knob){
+        if(knob == 0) {
+            shared_data.scene = SETTINGS;
+        }
+    });
+
+    scene->set_turn_handler([](int knob, int old_value, int new_value){
+        if(knob == 2) {
+            shared_data.active_component_index = ((new_value / 16) % 5);
+        }
+    });
     return scene;
 }
 

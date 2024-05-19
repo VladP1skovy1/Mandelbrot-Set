@@ -1,7 +1,7 @@
 #include "scene.h"
 
 Scene::Scene(){
-    this->clickHandler = nullptr;
+    this->press_handler = nullptr;
     this->turnHandler = nullptr;
 }
 void Scene::add_component(Component* comp){
@@ -9,12 +9,47 @@ void Scene::add_component(Component* comp){
 }
 
 void Scene::render(){
+    if(components.size() == 0){
+        return;
+    }
     for (int i = 0; i < components.size(); i++)
     {
         components[i]->render();
     }
 }
 
+void Scene::set_active_component(int index)
+{
+    if (index >= 0 && index < components.size())
+    {
+        components[active_component_index]->set_active(false);
+        active_component_index = index;
+        components[active_component_index]->set_active(true);
+    }
+}
 
+void Scene::knob_pressed(int knob)
+{
+    if (this->press_handler != nullptr)
+    {
+        this->press_handler(knob);
+    }
+}
 
+void Scene::knob_turned(int knob, int old_value, int new_value)
+{
+    if (this->turnHandler != nullptr)
+    {
+        this->turnHandler(knob, old_value, new_value);
+    }
+}
 
+void Scene::set_press_handler(PressHandler clickHandler)
+{
+    this->press_handler = clickHandler;
+}
+
+void Scene::set_turn_handler(TurnHandler turnHandler)
+{
+    this->turnHandler = turnHandler;
+}

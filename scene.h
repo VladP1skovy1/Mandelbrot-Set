@@ -2,23 +2,27 @@
 #include <memory>
 #include <vector>
 #include "component.h"
-#include "click_handler.h"
 class Scene{
 
 private:
     std::vector<std::unique_ptr<Component>>components;
+    int active_component_index;
 
 public:
-    typedef void (*ClickHandler)(int);
+    typedef void (*PressHandler)(int);
     typedef void (*TurnHandler)(int, int, int);
+    //typedef [] (int, int, int) TurnHandler;
     Scene();
     void add_component(Component* comp);
     void render();
-    void set_click_handler(ClickHandler clickHandler);
+    void set_active_component(int index);
+    void knob_pressed(int knob);
+    void knob_turned(int knob, int old_value, int new_value);
+    void set_press_handler(PressHandler clickHandler);
     void set_turn_handler(TurnHandler turnHandler);
 private:
 
-    ClickHandler clickHandler;
+    PressHandler press_handler;
     TurnHandler turnHandler;
 };
 
