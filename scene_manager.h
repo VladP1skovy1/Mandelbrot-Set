@@ -1,11 +1,15 @@
+#pragma once
 #include <cstdint>
-#include "shared_data.h"
 #include "scene.h"
+#include "scene_builder.h"
 
-class scene_controller {
+class SceneManager {
 private:
-    Scene current_scene;
+    Scene* current_scene;
+    int current_scene_id;
 public:
+    SceneManager();
+    void update();
     void knob_pressed(int knob);
     void knob_turned(int knob, int old_value, int new_value);
 };
