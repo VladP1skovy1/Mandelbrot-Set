@@ -17,28 +17,28 @@
 #include "scene.h"
 #include "scene_builder.h"
 #include "render_controller.h"
+#include "input_controller.h"
  
 #define M_PI 3.1415
  
 
 int main(int argc, char *argv[]) {
   RenderController* rnd_ct = RenderController::get_instance();
-
+  InputController* inpt_ct = InputController::GetInstance();
+  SceneManager* scene_manager = new SceneManager();
+  inpt_ct->set_scene_manager(scene_manager);
 
 //sleep(5);
  
   int k;
   int ptr;
   struct timespec loop_delay = 
-    {.tv_sec = 0, .tv_nsec = 60 * 1000 * 1000};
-  Label* example = new Label(0,0,150,200,"example");
-  Scene* scene = SceneBuilder::create_menu_scene();
-  example->set_color(BLUE);
+    {.tv_sec = 0, .tv_nsec = 30 * 1000 * 1000};
   while(1) {
-    scene->render();
-  rnd_ct->render();
-  //clock_nanosleep(CLOCK_MONOTONIC, 0, &loop_delay, NULL);
-  sleep(1);
+    scene_manager->update();
+    rnd_ct->render();
+    inpt_ct->update();
+    clock_nanosleep(CLOCK_MONOTONIC, 0, &loop_delay, NULL);
   }
   printf("Goodbye\n");
 

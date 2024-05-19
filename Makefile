@@ -11,10 +11,10 @@ LDLIBS += -lrt -lpthread
 
 SOURCES = mzapo_phys.c mzapo_parlcd.c serialize_lock.c#change_me.c mzapo_phys.c mzapo_parlcd.c serialize_lock.c
 SOURCES += font_prop14x16.c font_rom8x16.c
-SOURCES += parlcd.cpp component.cpp label.cpp scene.cpp scene_builder.cpp render_controller.cpp
+SOURCES += parlcd.cpp component.cpp label.cpp scene.cpp scene_builder.cpp render_controller.cpp input_controller.cpp scene_manager.cpp shared_data.cpp
 SOURCES += menu.cpp
 TARGET_EXE = Mandelbrot
-TARGET_IP ?= 192.168.223.106
+TARGET_IP ?= 192.168.135.14
 ifeq ($(TARGET_IP),)
 ifneq ($(filter debug run,$(MAKECMDGOALS)),)
 $(warning The target IP address is not set)
