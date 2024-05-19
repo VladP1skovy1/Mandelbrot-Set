@@ -1,3 +1,4 @@
+#pragma once
 enum STATES{
     MENU,
     SETTINGS,
@@ -8,10 +9,9 @@ enum STATES{
 };
 
 typedef struct {
-    int app_state;
+    int scene;
+    int active_component_index;
 } data_t;
 
-static data_t shared_data = {
-    .app_state = MAIN
-};
+extern data_t shared_data;
 
