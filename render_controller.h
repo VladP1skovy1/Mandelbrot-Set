@@ -3,6 +3,7 @@
 #include "component.h"
 #include "label.h"
 #include "parlcd.h"
+#include <string.h>
 
 class RenderController
 {
@@ -29,6 +30,7 @@ public:
 
     static void render_label(Component* comp);
     void render();
+    void refresh();
     RenderController();
     ~RenderController();
 };

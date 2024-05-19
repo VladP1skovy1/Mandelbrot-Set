@@ -8,43 +8,52 @@ InputController::InputController() {
     if (mem_base == nullptr) {
         std::exit(1);
     }
-    *(volatile uint32_t *)(mem_base + SPILED_REG_KNOBS_8BIT_o) = 0;
     knobs = *(volatile uint32_t *)(mem_base + SPILED_REG_KNOBS_8BIT_o);
 }
 
-void InputController::check_update() {
-    uint32_t r = *(volatile uint32_t *)(mem_base + SPILED_REG_KNOBS_8BIT_o);
+void InputController::update() {
+    knobs_t r = *(volatile uint32_t *)(mem_base + SPILED_REG_KNOBS_8BIT_o);
 
-    int diff = r^knobs;
+    knobs_t diff = r^knobs;
     if (diff == 0){
         return;
     }
 
-    if(diff & BLUE_KNOB_PRESSED) {
-        std::cout << "Blue button pressed. Value is " << (r&BLUE_KNOB_PRESSED) << std::endl;
-        std::cout << "Old knobs value: " << (knobs&BLUE_KNOB_PRESSED) << std::endl;
-    } else if(diff & GREEN_KNOB_PRESSED) {
-        std::cout << "Green button pressed. Value is " << (r&GREEN_KNOB_PRESSED) << std::endl;
-        std::cout << "Old knobs value: " << (knobs&GREEN_KNOB_PRESSED) << std::endl;
-    } else if(diff & RED_KNOB_PRESSED) {
-        std::cout << "Red button pressed. Value is "<< (r&RED_KNOB_PRESSED) << std::endl;
-        std::cout << "Old knobs value: " << (knobs&RED_KNOB_PRESSED) << std::endl;
+    if(diff.is_blue_pressed) {
+        scene_manager->knob_pressed(2);
+        //std::cout << "Blue button pressed. Value is " << (r.is_blue_pressed) << std::endl;
+        //std::cout << "Old knobs value: " << (knobs.is_blue_pressed) << std::endl;
+    } else if(diff.is_green_pressed) {
+        scene_manager->knob_pressed(1);
+        //std::cout << "Green button pressed. Value is " << (r.is_green_pressed) << std::endl;
+        //std::cout << "Old knobs value: " << (knobs.is_green_pressed) << std::endl;
+    } else if(diff.is_red_pressed) {
+        scene_manager->knob_pressed(0);
+        //std::cout << "Red button pressed. Value is "<< (r.is_red_pressed) << std::endl;
+        //std::cout << "Old knobs value: " << (knobs.is_red_pressed) << std::endl;
     }
 
-    if(diff & RED_KNOB_VALUE) {
-        std::cout << "Red button turned. Value is "<< (r&RED_KNOB_VALUE) << std::endl;
-        std::cout << "Old knobs value: " << (knobs&RED_KNOB_PRESSED) << std::endl;
-    } else if(diff & GREEN_KNOB_VALUE) {
-        std::cout << "Green button turned. Value is "<< (r&GREEN_KNOB_VALUE) << std::endl;
-        std::cout << "Old knobs value: " << (knobs&GREEN_KNOB_PRESSED) << std::endl;
-    } else if(diff & BLUE_KNOB_VALUE) {
-        std::cout << "Blue button turned. Value is "<< (r&BLUE_KNOB_VALUE) << std::endl;
-        std::cout << "Old knobs value: " << (knobs&BLUE_KNOB_PRESSED) << std::endl;
+    if(diff.red) {
+        scene_manager->knob_turned(0, knobs.red, r.red);
+        //std::cout << "Red button turned. Value is "<< (r.red) << std::endl;
+        //std::cout << "Old knobs value: " << (knobs.red) << std::endl;
+    } else if(diff.green) {
+        scene_manager->knob_turned(1, knobs.green, r.green);
+        //std::cout << "Green button turned. Value is "<< (r.green) << std::endl;
+        //std::cout << "Old knobs value: " << (knobs.green) << std::endl;
+    } else if(diff.blue) {
+        scene_manager->knob_turned(2, knobs.blue, r.blue);
+        //std::cout << "Blue button turned. Value is "<< (r.blue) << std::endl;
+        //std::cout << "Old knobs value: " << (knobs.blue) << std::endl;
     }
+
+    knobs = r;
 }
 
-
-
+void InputController::set_scene_manager(SceneManager *scene_manager)
+{
+    this->scene_manager = scene_manager;
+}
 
 InputController *InputController::GetInstance() {
     if(instance == nullptr) {

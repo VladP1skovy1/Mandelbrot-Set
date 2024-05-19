@@ -82,37 +82,46 @@ void RenderController::render_label(Component* comp)
     int y_offset = lbl->get_pos_y();
     int lbl_height = lbl->get_height();
     int lbl_width = lbl->get_width();
-
+    color565_t bg_color = lbl->get_bg_color();
+    if(lbl->is_active()) {
+        bg_color = bg_color * 2;
+    }
     for (size_t i = 0; i < lbl_height; i++) {
         for (size_t j = 0; j < lbl_width; j++) {
-            ren_con->draw_pixel(j + x_offset, i + y_offset, 0x0000);
+            ren_con->draw_pixel(j + x_offset, i + y_offset, bg_color);
         }
     
     }
 
     int scale = lbl->get_font_size();
-    int text_length =  text.size();
+    int text_length = text.size();
     int text_width = 0;
     int text_height = 16 * scale;
     for (int i = 0; i < text_length; i++)
     {
-        text_width += char_width(text[i] + 2) * scale;
+        text_width += char_width(text[i] + 1) * scale;
     }
 
     int color = comp->get_color();
     x_offset = x_offset - text_width/2 + lbl_width/2;
-    y_offset = y_offset - text_height/2 + lbl_width/2;
+    y_offset = y_offset - text_height/2 + lbl_height/2;
     
 
     for (int i = 0; i < text_length; i++) {
       ren_con->draw_char(x_offset, y_offset, scale, text[i], color);
-      x_offset += (char_width(text[i] + 2) * scale);
+      x_offset += ((char_width(text[i]) + 1) * scale);
     }
 }
 
 void RenderController::render()
 {
     this->parlcd->update(fb, width * height);
+    this->refresh();
+}
+
+void RenderController::refresh()
+{
+    memset(fb, 0, width * height * 2);
 }
 
 RenderController::RenderController()
