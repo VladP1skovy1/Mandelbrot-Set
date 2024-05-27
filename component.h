@@ -39,6 +39,6 @@ public:
     // MUST BE IMPLEMENTED IN INHERITED CLASSES
     virtual void render();
     ~Component() {};
-private:
+protected:
     static RenderHandler render_handler;
 };

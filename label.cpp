@@ -1,7 +1,5 @@
 #include "label.h"
 
-Component::RenderHandler Label::render_handler = nullptr;
-
 Label::Label(uint16_t x, uint16_t y, uint16_t height, uint16_t width, std::string text) :
 Label(x, y, width, height)
 {

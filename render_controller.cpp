@@ -113,6 +113,42 @@ void RenderController::render_label(Component* comp)
     }
 }
 
+void RenderController::render_set(Component* comp) {
+    Set* set = dynamic_cast<Set*>(comp);
+    RenderController* ren_con = RenderController::get_instance();
+    // x amplitude of the set
+    int a_x = set->get_max_x() - set->get_min_x();
+    int min_x = set->get_min_x();
+    int max_x = set->get_max_x();
+    // y amplitude of the set
+    int a_y = set->get_max_y() - set->get_min_y();
+    int min_y = set->get_min_y();
+    int max_y = set->get_max_y();
+    float x_ratio = (float)set->get_width() / ren_con->width;
+    float y_ratio = (float)set->get_height() / ren_con->height;
+    int set_width = set->get_width();
+    const unsigned char* buffer = set->get_buffer();
+
+    for (int i = 0; i < ren_con->height; i++)
+    {
+        for (int j = 0; j < ren_con->width; j++)
+        {
+            int set_x = j * x_ratio;
+            int set_y = i * y_ratio;
+            int k = buffer[set_y * set_width + set_x];
+            if (k == 255)
+            {
+                ren_con->draw_pixel(j, i, 0xFFFF);
+            }
+            else
+            {
+                ren_con->draw_pixel(j, i, 0x0000);
+            }
+        }
+    }
+
+}
+
 void RenderController::render()
 {
     this->parlcd->update(fb, width * height);
@@ -131,4 +167,5 @@ RenderController::RenderController()
     this->height = PARLCD_HEIGHT;
     fb = new unsigned short[width * height * 2];
     Label::set_render_handler(RenderController::render_label);
+    Set::set_render_handler(RenderController::render_set);
 }

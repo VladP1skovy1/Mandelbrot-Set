@@ -2,6 +2,7 @@
 #include "font_types.h"
 #include "component.h"
 #include "label.h"
+#include "set.h"
 #include "parlcd.h"
 #include <string.h>
 
@@ -29,6 +30,7 @@ public:
     static RenderController* get_instance();
 
     static void render_label(Component* comp);
+    static void render_set(Component *comp);
     void render();
     void refresh();
     RenderController();

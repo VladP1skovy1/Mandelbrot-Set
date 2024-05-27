@@ -7,7 +7,6 @@ class Label : public Component
 private:
     uint16_t font_size_;
     std::string text_;
-    static RenderHandler render_handler;
     
 public:
     // ctors
