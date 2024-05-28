@@ -1,5 +1,12 @@
 #include "set.h"
 
+Set::RenderHandler Set::render_handler_set = nullptr;
+
+Set::Set(SETS set) : Set(DEFAULT_MIN_X, DEFAULT_MAX_X, DEFAULT_MIN_Y, DEFAULT_MAX_Y, 0.01, 0.01)
+{
+    this->set = set;
+}
+
 Set::Set(int min_x, int max_x, int min_y, int max_y, double d_x, double d_y)
 {
     this->min_x = min_x;
@@ -12,6 +19,21 @@ Set::Set(int min_x, int max_x, int min_y, int max_y, double d_x, double d_y)
     this->width = (max_x - min_x) / d_x + 1;
     this->buffer = new unsigned char[height * width];
     memset(this->buffer, 0, height * width);
+    
+    switch (this->set)
+    {
+    case Mandelbrot:
+        init_mandelbrot();
+        break;
+    case Serpinski:
+        break;
+    default:
+        break;
+    }
+}
+
+void Set::init_mandelbrot()
+{
 
     for (int i = 0; i < height; i++)
     {
@@ -41,9 +63,9 @@ Set::Set(int min_x, int max_x, int min_y, int max_y, double d_x, double d_y)
 
 void Set::render()
 {
-    if(this->render_handler != nullptr)
+    if(this->render_handler_set != nullptr)
     {
-        this->render_handler(this);
+        this->render_handler_set(this);
     }
 }
 
@@ -80,4 +102,9 @@ double Set::get_dy() const
 const unsigned char* Set::get_buffer() const
 {
     return buffer;
+}
+
+void Set::set_render_handler(RenderHandler render_handler)
+{
+    Set::render_handler_set = render_handler;
 }

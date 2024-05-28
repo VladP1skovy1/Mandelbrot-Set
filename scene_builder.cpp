@@ -1,4 +1,5 @@
 #include "scene_builder.h"
+#include "set.h"
 
 Scene *SceneBuilder::create_scene(int scene_id)
 {
@@ -40,14 +41,30 @@ Scene *SceneBuilder::create_menu_scene()
     lbl2->set_font_size(3);
     scene->add_component(lbl);
     scene->add_component(lbl2);
+    printf("CREATING MAIN MENU SCENE \n");
     scene->set_press_handler([](int knob){
-        if(knob == 1) {
-            printf("Knob pressed: %d\n", knob);
-            shared_data.scene = SETTINGS;
-            printf("Scene changed to %d\n", shared_data.scene);
+        if(knob == 2) {
+            printf("Knob 2 pressed\n");
+            switch (shared_data.active_component_index)
+            {
+            case 0:
+                shared_data.scene = MAIN;
+                break;
+            case 1:
+                shared_data.scene = SETTINGS;
+                break;
+            default:
+                break;
+            }
         }
     });
-    scene->set_active_component(0);
+    scene->set_turn_handler([](int knob, int old_value, int new_value){
+        if(knob == 2) {
+            printf("New value: %d\n", new_value);
+            shared_data.active_component_index = ((new_value / 16) % 2);
+        }
+    });
+    scene->set_active_component(shared_data.active_component_index);
     return scene;
 }
 
@@ -57,6 +74,7 @@ Scene* SceneBuilder::create_settings_scene(){
     scene->add_component(new Label(40, 130, 30, 200, "Change fractal"));
     scene->add_component(new Label(40, 160, 30, 200, "Change color"));
     scene->add_component(new Label(40, 190, 30, 200, "Change C value"));
+    scene->add_component(new Label(40, 210, 30, 200, "To menu"));
     scene->set_press_handler([](int knob) {
         if(knob == 2) {
             switch (shared_data.active_component_index)
@@ -70,6 +88,9 @@ Scene* SceneBuilder::create_settings_scene(){
             case 2:
                 shared_data.scene = CHANGE_VALUE;
                 break;
+            case 3:
+                shared_data.scene = MENU;
+                break;
             default:
                 break;
             }
@@ -77,7 +98,7 @@ Scene* SceneBuilder::create_settings_scene(){
     });
     scene->set_turn_handler([](int knob, int old_value, int new_value){
         if(knob == 2) {
-            shared_data.active_component_index = ((new_value / 16) % 3);
+            shared_data.active_component_index = ((new_value / 16) % 4);
         }
     });
     scene->set_active_component(0);
@@ -131,8 +152,20 @@ Scene* SceneBuilder::create_change_set_scene(){
 }
 
 Scene* SceneBuilder::create_main_scene(){
-
     Scene* scene = new Scene();
+    Set* set = new Set((SETS)shared_data.set);
+    scene->add_component(set);
+    scene->set_press_handler([](int knob){
+        if(knob == 0) {
+            shared_data.scene = MENU;
+        }
+    });
+    
+    scene->set_turn_handler([](int knob, int old_value, int new_value){
+        if(knob == 2) {
+            shared_data.active_component_index = ((new_value / 16) % 5);
+        }
+    });
     return scene;
 }
 

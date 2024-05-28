@@ -18,6 +18,7 @@
 #include "scene_builder.h"
 #include "render_controller.h"
 #include "input_controller.h"
+#include "shared_data.h"
  
 #define M_PI 3.1415
  
@@ -27,8 +28,6 @@ int main(int argc, char *argv[]) {
   InputController* inpt_ct = InputController::GetInstance();
   SceneManager* scene_manager = new SceneManager();
   inpt_ct->set_scene_manager(scene_manager);
-  Set *set = new Set(-2, 0, -1, 1, 0.02, 0.01);
-
 //sleep(5);
  
   int k;
@@ -36,8 +35,7 @@ int main(int argc, char *argv[]) {
   struct timespec loop_delay = 
     {.tv_sec = 0, .tv_nsec = 30 * 1000 * 1000};
   while(1) {
-    //scene_manager->update();
-    set->render();
+    scene_manager->update();
     rnd_ct->render();
     inpt_ct->update();
     clock_nanosleep(CLOCK_MONOTONIC, 0, &loop_delay, NULL);

@@ -1,4 +1,5 @@
 #pragma once
+#include "math.h"
 #include "font_types.h"
 #include "component.h"
 #include "label.h"

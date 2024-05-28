@@ -1,6 +1,9 @@
 #include "scene.h"
+#include "shared_data.h"
 
 Scene::Scene(){
+    shared_data.active_component_index = 0;
+    this->active_component_index = 0;
     this->press_handler = nullptr;
     this->turnHandler = nullptr;
 }

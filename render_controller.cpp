@@ -114,20 +114,25 @@ void RenderController::render_label(Component* comp)
 }
 
 void RenderController::render_set(Component* comp) {
+    printf("Rendering set\n");
     Set* set = dynamic_cast<Set*>(comp);
     RenderController* ren_con = RenderController::get_instance();
     // x amplitude of the set
-    int a_x = set->get_max_x() - set->get_min_x();
-    int min_x = set->get_min_x();
-    int max_x = set->get_max_x();
+    float a_x = set->get_max_x() - set->get_min_x();
+    float min_x = set->get_min_x();
+    float max_x = set->get_max_x();
     // y amplitude of the set
-    int a_y = set->get_max_y() - set->get_min_y();
-    int min_y = set->get_min_y();
-    int max_y = set->get_max_y();
+    float a_y = set->get_max_y() - set->get_min_y();
+    float start_x = 10/29 * (sqrt(set_data.zoom)) + set_data.trans_x;
+    float start_y = 10/29 * (sqrt(set_data.zoom)) + set_data.trans_y;
+    float min_y = set->get_min_y();
+    float max_y = set->get_max_y();
     float x_ratio = (float)set->get_width() / ren_con->width;
     float y_ratio = (float)set->get_height() / ren_con->height;
     int set_width = set->get_width();
     const unsigned char* buffer = set->get_buffer();
+    float zoom = set_data.zoom;
+
 
     for (int i = 0; i < ren_con->height; i++)
     {
@@ -138,11 +143,11 @@ void RenderController::render_set(Component* comp) {
             int k = buffer[set_y * set_width + set_x];
             if (k == 255)
             {
-                ren_con->draw_pixel(j, i, 0xFFFF);
+                ren_con->draw_pixel(j, i, 0x0000);
             }
             else
             {
-                ren_con->draw_pixel(j, i, 0x0000);
+                ren_con->draw_pixel(j, i, ((float)k / 255) * 0xFFFF);
             }
         }
     }

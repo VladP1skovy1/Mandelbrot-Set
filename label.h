@@ -21,4 +21,6 @@ public:
     uint16_t get_font_size() const;
     // virtual method implementation
     void render();
+protected:
+    static RenderHandler render_handler_label;
 };

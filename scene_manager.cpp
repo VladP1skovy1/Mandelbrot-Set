@@ -9,6 +9,7 @@ SceneManager::SceneManager()
 void SceneManager::update()
 {
     if(current_scene_id != shared_data.scene){
+        shared_data.active_component_index = 0;
         current_scene_id = shared_data.scene;
         delete current_scene;
         current_scene = SceneBuilder::create_scene(shared_data.scene);

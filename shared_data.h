@@ -8,10 +8,23 @@ enum STATES{
     MAIN
 };
 
+enum SETS {
+    Mandelbrot,
+    Serpinski
+};
+
 typedef struct {
     int scene;
     int active_component_index;
+    int set;
 } data_t;
 
+typedef struct {
+    float zoom;
+    float trans_x;
+    float trans_y;
+} set_t;
+
 extern data_t shared_data;
+extern set_t set_data;
 
