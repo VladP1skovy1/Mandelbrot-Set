@@ -51,12 +51,14 @@ private:
     static InputController* instance;
     SceneManager *scene_manager;
     unsigned char *mem_base;
+    unsigned char *led_mem_base;
     knobs_t knobs;
 
 public:
     InputController();
     void update();
     void set_scene_manager(SceneManager *scene_manager);
+    void fire_leds(int n);
     static InputController* GetInstance();
 };
 

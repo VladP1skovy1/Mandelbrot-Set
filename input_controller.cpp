@@ -46,6 +46,7 @@ void InputController::update() {
         //std::cout << "Blue button turned. Value is "<< (r.blue) << std::endl;
         //std::cout << "Old knobs value: " << (knobs.blue) << std::endl;
     }
+    fire_leds(shared_data.led_fired);
 
     knobs = r;
 }
@@ -53,6 +54,12 @@ void InputController::update() {
 void InputController::set_scene_manager(SceneManager *scene_manager)
 {
     this->scene_manager = scene_manager;
+}
+
+void InputController::fire_leds(int n)
+{
+    printf("Fire %d leds\n", n);
+    *(volatile uint32_t *)(mem_base + SPILED_REG_LED_LINE_o) =  0xffffffff << (32 - n);
 }
 
 InputController *InputController::GetInstance() {

@@ -17,6 +17,7 @@ typedef struct {
     int scene;
     int active_component_index;
     int set;
+    int led_fired;
 } data_t;
 
 typedef struct {

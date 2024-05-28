@@ -123,12 +123,12 @@ void RenderController::render_set(Component* comp) {
     float max_x = set->get_max_x();
     // y amplitude of the set
     float a_y = set->get_max_y() - set->get_min_y();
-    float start_x = 10/29 * (sqrt(set_data.zoom)) + set_data.trans_x;
-    float start_y = 10/29 * (sqrt(set_data.zoom)) + set_data.trans_y;
+    float x_ratio = ((float)set->get_width()- (1 - set_data.zoom) * set->get_width() / 2) / ren_con->width;
+    float y_ratio = ((float)set->get_height()- (1 - set_data.zoom) * set->get_width() / 2) / ren_con->height;
+    int start_x = (1 - set_data.zoom) * set->get_width() / 4 + set_data.trans_x * x_ratio;
+    int start_y = (1 - set_data.zoom) * set->get_height() / 4 + set_data.trans_y * y_ratio;
     float min_y = set->get_min_y();
     float max_y = set->get_max_y();
-    float x_ratio = (float)set->get_width() / ren_con->width;
-    float y_ratio = (float)set->get_height() / ren_con->height;
     int set_width = set->get_width();
     const unsigned char* buffer = set->get_buffer();
     float zoom = set_data.zoom;
@@ -138,8 +138,8 @@ void RenderController::render_set(Component* comp) {
     {
         for (int j = 0; j < ren_con->width; j++)
         {
-            int set_x = j * x_ratio;
-            int set_y = i * y_ratio;
+            int set_x = j * x_ratio + start_x;
+            int set_y = i * y_ratio + start_y;
             int k = buffer[set_y * set_width + set_x];
             if (k == 255)
             {

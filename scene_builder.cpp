@@ -162,9 +162,18 @@ Scene* SceneBuilder::create_main_scene(){
     });
     
     scene->set_turn_handler([](int knob, int old_value, int new_value){
-        if(knob == 2) {
-            shared_data.active_component_index = ((new_value / 16) % 5);
+        switch(knob) {
+            case 0:
+                set_data.trans_x = ((float)new_value / 255) * 50; 
+                break;
+            case 1:
+                set_data.trans_y = ((float)new_value / 255) * 50; 
+                break;
+            case 2:
+                set_data.zoom = ((float)new_value / 255) / 2 + 0.25;
+                break;
         }
+        shared_data.led_fired = (32 - new_value / 8);
     });
     return scene;
 }
