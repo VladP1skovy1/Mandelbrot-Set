@@ -84,7 +84,7 @@ void RenderController::render_label(Component* comp)
     int lbl_width = lbl->get_width();
     color565_t bg_color = lbl->get_bg_color();
     if(lbl->is_active()) {
-        bg_color = bg_color * 2;
+        bg_color = lbl->get_active_color() * 2;
     }
     for (size_t i = 0; i < lbl_height; i++) {
         for (size_t j = 0; j < lbl_width; j++) {

@@ -33,12 +33,16 @@ Scene *SceneBuilder::create_scene(int scene_id)
 Scene *SceneBuilder::create_menu_scene()
 {
     Scene* scene = new Scene();
-    Label* lbl = new Label(160, 60, 40, 200, "Set Generator");
-    Label* lbl2 = new Label(140, 120, 40, 200, "Settings");
+    Label* lbl = new Label(0, 80, 80, 480, "Set Generator");
+    Label* lbl2 = new Label(0, 170, 80, 480, "Settings");
     lbl->set_color(WHITE);
     lbl2->set_color(WHITE);
+    lbl->set_active_color(GREEN);
+    lbl2->set_active_color(GREEN);
     lbl->set_font_size(3);
-    lbl2->set_font_size(3);
+    lbl2->set_font_size(2);
+    lbl->set_bg_color(DARK_GREEN);
+    lbl2->set_bg_color(DARK_GREEN);
     scene->add_component(lbl);
     scene->add_component(lbl2);
     printf("CREATING MAIN MENU SCENE \n");

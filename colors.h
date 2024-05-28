@@ -3,13 +3,14 @@
 
 enum COLORS{
     RED = 0xf800,
-    GREEN = 0x07e0,
+    GREEN = 0x27a627,
     BLUE = 0x001f,
     WHITE = 0xffff,
     BLACK = 0x0000,
     YELLOW = 0xffe0,
     PURPLE = 0xf81f,
-    CYAN = 0x07ff
+    CYAN = 0x07ff,
+    DARK_GREEN = 0x007800
 };
 
 typedef struct Color565 {
