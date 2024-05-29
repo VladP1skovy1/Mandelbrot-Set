@@ -62,10 +62,10 @@ Scene *SceneBuilder::create_menu_scene()
             }
         }
     });
-    scene->set_turn_handler([](int knob, int old_value, int new_value){
+    scene->set_dir_turn_handler([](int knob, int dir){
         if(knob == 2) {
-            printf("New value: %d\n", new_value);
-            shared_data.active_component_index = ((new_value / 16) % 2);
+            shared_data.active_component_index = 
+                    ((shared_data.active_component_index + dir) % 2);
         }
     });
     scene->set_active_component(shared_data.active_component_index);
@@ -100,9 +100,10 @@ Scene* SceneBuilder::create_settings_scene(){
             }
         }
     });
-    scene->set_turn_handler([](int knob, int old_value, int new_value){
+    scene->set_dir_turn_handler([](int knob, int dir){
         if(knob == 2) {
-            shared_data.active_component_index = ((new_value / 16) % 4);
+            shared_data.active_component_index = 
+                    ((shared_data.active_component_index + dir) % 4);
         }
     });
     scene->set_active_component(0);
@@ -137,19 +138,28 @@ Scene* SceneBuilder::create_change_set_scene(){
 
     Scene* scene = new Scene();
     scene->add_component(new Label(40, 100, 30, 200, "Mandelbrto Set"));
-    scene->add_component(new Label(40, 130, 30, 200, "Sierpinski Triangle"));
-    scene->add_component(new Label(40, 160, 30, 200, "Koch curve"));
-    scene->add_component(new Label(40, 190, 30, 200, "Sierpinski carpet"));
-    scene->add_component(new Label(40, 210, 30, 200, "Menger sponge"));
+    scene->add_component(new Label(40, 130, 30, 200, "Julias set"));
+    scene->add_component(new Label(40, 160, 30, 200, "Sierpinski triangle"));
     scene->set_press_handler([](int knob){
-        if(knob == 0) {
+        switch (knob)
+        {
+        case 0:
             shared_data.scene = SETTINGS;
+            break;
+        case 2:
+            set_data.init();
+            shared_data.set = shared_data.active_component_index;
+            shared_data.scene = SETTINGS;
+            break;
+        default:
+            break;
         }
     });
 
-    scene->set_turn_handler([](int knob, int old_value, int new_value){
+    scene->set_dir_turn_handler([](int knob, int dir){
         if(knob == 2) {
-            shared_data.active_component_index = ((new_value / 16) % 5);
+            shared_data.active_component_index = 
+                    ((shared_data.active_component_index + dir) % 3);
         }
     });
     return scene;

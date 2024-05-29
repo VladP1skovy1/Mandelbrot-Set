@@ -82,7 +82,7 @@ void RenderController::render_label(Component* comp)
     int y_offset = lbl->get_pos_y();
     int lbl_height = lbl->get_height();
     int lbl_width = lbl->get_width();
-    color565_t bg_color = lbl->get_bg_color();
+    rgb565_t bg_color = lbl->get_bg_color();
     if(lbl->is_active()) {
         bg_color = lbl->get_active_color() * 2;
     }
@@ -116,22 +116,21 @@ void RenderController::render_label(Component* comp)
 void RenderController::render_set(Component* comp) {
     Set* set = dynamic_cast<Set*>(comp);
     RenderController* ren_con = RenderController::get_instance();
+    rgb565_t color = set->get_color();
+    int max_value = set->get_max_value();
+
     if(shared_data.set_params_changed) {
         set->update();
         shared_data.set_params_changed = false;
     }
+
     int width = set->get_width();
     int height = set->get_height();
     const unsigned char *buffer = set->get_buffer();
     for (size_t i = 0; i < height; i++) {
         for (size_t j = 0; j < width; j++) {
             int k = buffer[i * width + j];
-            if (k == 255) {
-                ren_con->draw_pixel(j, i, 0);
-            }
-            else {
-                ren_con->draw_pixel(j, i, (k << 8) | (k << 4) | k);
-            }
+            ren_con->draw_pixel(j, i, color * ((float)k / max_value));
         }
     }
 }

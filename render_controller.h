@@ -5,6 +5,7 @@
 #include "label.h"
 #include "set.h"
 #include "parlcd.h"
+#include "colors.h"
 #include <string.h>
 
 class RenderController

@@ -20,6 +20,7 @@
 #include "input_controller.h"
 #include "shared_data.h"
 #include "leds_controller.h"
+#include "rgbled_controller.h"
  
 #define M_PI 3.1415
  
@@ -29,6 +30,7 @@ int main(int argc, char *argv[]) {
   InputController* inpt_ct = InputController::get_instance();
   SceneManager* scene_manager = new SceneManager();
   inpt_ct->set_scene_manager(scene_manager);
+  set_data.init();
 //sleep(5);
  
   int k;
@@ -39,6 +41,7 @@ int main(int argc, char *argv[]) {
     scene_manager->update();
     inpt_ct->update();
     LedsController::update();
+    RGBLedController::update();
     rnd_ct->render();
     clock_nanosleep(CLOCK_MONOTONIC, 0, &loop_delay, NULL);
   }

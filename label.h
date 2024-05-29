@@ -7,7 +7,7 @@ class Label : public Component
 private:
     uint16_t font_size_;
     std::string text_;
-    color565_t active_color;
+    rgb565_t active_color;
     
 public:
     // ctors
@@ -17,11 +17,11 @@ public:
     void set_text(std::string text);
     void set_font_size(uint16_t font_sizes);
     static void set_render_handler(void (*render_handler)(Component*));
-    void set_active_color(color565_t color);
+    void set_active_color(rgb565_t color);
     // getters
     std::string get_text() const;
     uint16_t get_font_size() const;
-    color565_t get_active_color() const;
+    rgb565_t get_active_color() const;
     // virtual method implementation
     void render();
 protected:

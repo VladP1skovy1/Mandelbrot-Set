@@ -18,15 +18,10 @@ class Set : public Component {
     using Component::Component;
     Set(int x, int y, int width, int height);
     void init_mandelbrot();
-    void calculate_for_index(int index);
+    void init_julia_for_region(int start, int end);
     void init_mandelbrot_for_region(int start, int end);
     void render();
-    int get_min_x() const;
-    int get_max_x() const;
-    int get_min_y() const;
-    int get_max_y() const;
-    double get_dx() const;
-    double get_dy() const;
+    int get_max_value() const;
     const unsigned char *get_buffer() const;
 
     static void  set_render_handler(RenderHandler render_handler);

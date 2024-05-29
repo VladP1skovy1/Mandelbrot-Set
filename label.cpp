@@ -24,7 +24,7 @@ void Label::set_render_handler(void (*render_handler)(Component *))
     Label::render_handler_label = render_handler;
 }
 
-void Label::set_active_color(color565_t color)
+void Label::set_active_color(rgb565_t color)
 {
     this->active_color = color;
 }
@@ -39,7 +39,7 @@ uint16_t Label::get_font_size() const
     return font_size_;
 }
 
-color565_t Label::get_active_color() const
+rgb565_t Label::get_active_color() const
 {
     return active_color;
 }
