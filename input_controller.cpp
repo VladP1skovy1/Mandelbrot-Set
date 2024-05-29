@@ -19,15 +19,15 @@ void InputController::update() {
         return;
     }
 
-    if(diff.is_blue_pressed) {
+    if(diff.is_blue_pressed && r.is_blue_pressed) {
         scene_manager->knob_pressed(2);
         //std::cout << "Blue button pressed. Value is " << (r.is_blue_pressed) << std::endl;
         //std::cout << "Old knobs value: " << (knobs.is_blue_pressed) << std::endl;
-    } else if(diff.is_green_pressed) {
+    } else if(diff.is_green_pressed && r.is_green_pressed) {
         scene_manager->knob_pressed(1);
         //std::cout << "Green button pressed. Value is " << (r.is_green_pressed) << std::endl;
         //std::cout << "Old knobs value: " << (knobs.is_green_pressed) << std::endl;
-    } else if(diff.is_red_pressed) {
+    } else if(diff.is_red_pressed && r.is_red_pressed) {
         scene_manager->knob_pressed(0);
         //std::cout << "Red button pressed. Value is "<< (r.is_red_pressed) << std::endl;
         //std::cout << "Old knobs value: " << (knobs.is_red_pressed) << std::endl;

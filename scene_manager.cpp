@@ -9,6 +9,7 @@ SceneManager::SceneManager()
 void SceneManager::update()
 {
     if(current_scene_id != shared_data.scene){
+        shared_data.light_rgbs = false;
         shared_data.active_component_index = 0;
         current_scene_id = shared_data.scene;
         delete current_scene;

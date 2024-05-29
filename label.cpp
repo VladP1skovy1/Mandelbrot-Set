@@ -5,6 +5,7 @@ Label::RenderHandler Label::render_handler_label = nullptr;
 Label::Label(uint16_t x, uint16_t y, uint16_t height, uint16_t width, std::string text) :
 Label(x, y, width, height)
 {
+    this->attached_value = nullptr;
     this->text_ = text;
     this->font_size_ = 1;
 }
@@ -29,6 +30,12 @@ void Label::set_active_color(rgb565_t color)
     this->active_color = color;
 }
 
+void Label::attach_value(float *value)
+{
+    printf("Attached value\n");
+    attached_value = value;
+}
+
 std::string Label::get_text() const
 {
     return text_;
@@ -46,5 +53,10 @@ rgb565_t Label::get_active_color() const
 
 void Label::render()
 {
-  this->render_handler_label(this);
+    if(attached_value != nullptr) {
+        this->text_ = std::to_string(*attached_value);
+    }
+    if(render_handler_label != nullptr) {
+        render_handler_label(this);
+    }
 }

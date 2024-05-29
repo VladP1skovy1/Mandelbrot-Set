@@ -6,6 +6,7 @@ void Set::update()
 {
     this->set = (SETS)shared_data.set;
     this->params = set_data;   
+    this->color = this->params.color;
 
 
     unsigned nb_threads_hint = std::thread::hardware_concurrency();

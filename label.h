@@ -8,6 +8,7 @@ private:
     uint16_t font_size_;
     std::string text_;
     rgb565_t active_color;
+    float* attached_value;
     
 public:
     // ctors
@@ -18,6 +19,7 @@ public:
     void set_font_size(uint16_t font_sizes);
     static void set_render_handler(void (*render_handler)(Component*));
     void set_active_color(rgb565_t color);
+    void attach_value(float* value); 
     // getters
     std::string get_text() const;
     uint16_t get_font_size() const;
