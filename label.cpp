@@ -32,7 +32,6 @@ void Label::set_active_color(rgb565_t color)
 
 void Label::attach_value(float *value)
 {
-    printf("Attached value\n");
     attached_value = value;
 }
 

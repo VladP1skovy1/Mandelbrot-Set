@@ -1,4 +1,5 @@
 #pragma once
+#include "leds_controller.h"
 #include "shared_data.h"
 #include "scene.h"
 #include "label.h"

@@ -97,6 +97,7 @@ Scene* SceneBuilder::create_change_resolution_scene() {
         case 2:
             if(set_data.resolution - 0.01 * dir >= MIN_RESOLUTION && 
             set_data.resolution - 0.01 * dir <= MAX_RESOLUTION) {
+                shared_data.led_fired = set_data.resolution / MAX_RESOLUTION * 31;
                 set_data.resolution -= 0.01 * dir;
             }
             break;
