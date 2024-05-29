@@ -11,6 +11,7 @@ private:
 
 public:
     typedef void (*PressHandler)(int);
+    typedef void (*TurnDirectedHandler)(int, int);
     typedef void (*TurnHandler)(int, int, int);
     //typedef [] (int, int, int) TurnHandler;
     Scene();
@@ -19,11 +20,14 @@ public:
     void set_active_component(int index);
     void knob_pressed(int knob);
     void knob_turned(int knob, int old_value, int new_value);
-    void set_press_handler(PressHandler clickHandler);
-    void set_turn_handler(TurnHandler turnHandler);
+    void knob_turned_directed(int knob, int direction);
+    void set_press_handler(PressHandler press_handler);
+    void set_turn_handler(TurnHandler turn_handler);
+    void set_dir_turn_handler(TurnDirectedHandler dir_tur_handler);
 private:
 
     PressHandler press_handler;
-    TurnHandler turnHandler;
+    TurnHandler turn_handler;
+    TurnDirectedHandler dir_tur_handler;
 };
 

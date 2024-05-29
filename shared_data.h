@@ -1,4 +1,9 @@
 #pragma once
+#define DEFAULT_MIN_X -1
+#define DEFAULT_D_X 0.01
+#define DEFAULT_MIN_Y -1
+#define DEFAULT_D_Y 0.01
+
 enum STATES{
     MENU,
     SETTINGS,
@@ -18,12 +23,20 @@ typedef struct {
     int active_component_index;
     int set;
     int led_fired;
+    int set_params_changed;
 } data_t;
 
-typedef struct {
-    float zoom;
-    float trans_x;
-    float trans_y;
+typedef struct SetData {
+    float min_x;
+    float min_y;
+    float d_x;
+    float d_y;
+    void refresh() { 
+        min_x = DEFAULT_MIN_X; 
+        min_y = DEFAULT_MIN_Y; 
+        d_x = DEFAULT_D_X; 
+        d_y = DEFAULT_D_Y;
+    }
 } set_t;
 
 extern data_t shared_data;

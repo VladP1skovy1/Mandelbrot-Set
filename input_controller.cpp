@@ -35,18 +35,20 @@ void InputController::update() {
 
     if(diff.red) {
         scene_manager->knob_turned(0, knobs.red, r.red);
+        scene_manager->knob_turned_directed(0, knobs.red < r.red ? 1 : -1);
         //std::cout << "Red button turned. Value is "<< (r.red) << std::endl;
         //std::cout << "Old knobs value: " << (knobs.red) << std::endl;
     } else if(diff.green) {
         scene_manager->knob_turned(1, knobs.green, r.green);
+        scene_manager->knob_turned_directed(1, knobs.green < r.green ? 1 : -1);
         //std::cout << "Green button turned. Value is "<< (r.green) << std::endl;
         //std::cout << "Old knobs value: " << (knobs.green) << std::endl;
     } else if(diff.blue) {
         scene_manager->knob_turned(2, knobs.blue, r.blue);
+        scene_manager->knob_turned_directed(2, knobs.blue < r.blue ? 1 : -1);
         //std::cout << "Blue button turned. Value is "<< (r.blue) << std::endl;
         //std::cout << "Old knobs value: " << (knobs.blue) << std::endl;
     }
-    fire_leds(shared_data.led_fired);
 
     knobs = r;
 }
@@ -56,13 +58,7 @@ void InputController::set_scene_manager(SceneManager *scene_manager)
     this->scene_manager = scene_manager;
 }
 
-void InputController::fire_leds(int n)
-{
-    printf("Fire %d leds\n", n);
-    *(volatile uint32_t *)(mem_base + SPILED_REG_LED_LINE_o) =  0xffffffff << (32 - n);
-}
-
-InputController *InputController::GetInstance() {
+InputController *InputController::get_instance() {
     if(instance == nullptr) {
         InputController::instance = new InputController();
     }

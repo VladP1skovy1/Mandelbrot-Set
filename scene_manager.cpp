@@ -30,3 +30,8 @@ void SceneManager::knob_pressed(int knob)
 void SceneManager::knob_turned(int knob, int old_value, int new_value) {
     this->current_scene->knob_turned(knob, old_value, new_value);
 }
+
+void SceneManager::knob_turned_directed(int knob, int direction)
+{
+    this->current_scene->knob_turned_directed(knob, direction);
+}

@@ -2,62 +2,87 @@
 
 Set::RenderHandler Set::render_handler_set = nullptr;
 
-Set::Set(SETS set) : Set(DEFAULT_MIN_X, DEFAULT_MAX_X, DEFAULT_MIN_Y, DEFAULT_MAX_Y, 0.01, 0.01)
+void Set::update() 
 {
-    this->set = set;
+    this->set = (SETS)(shared_data.set);
+    this->params.min_x = set_data.min_x;
+    this->params.min_y = set_data.min_y;
+    this->params.d_x = set_data.d_x;
+    this->params.d_y = set_data.d_y;    
+
+
+    unsigned nb_threads_hint = std::thread::hardware_concurrency();
+    //unsigned nb_threads = nb_threads_hint == 0 ? 8 : (nb_threads_hint);
+    unsigned nb_threads = 10;
+    unsigned nb_elements = width * height;
+    unsigned batch_size = nb_elements / nb_threads;
+    unsigned batch_remainder = nb_elements % nb_threads;
+
+    std::vector< std::thread > my_threads(nb_threads);
+
+    for(unsigned i = 0; i < nb_threads; ++i)
+    {
+        int start = i * batch_size;
+        switch (this->set)
+        {
+        case Mandelbrot:
+            my_threads[i] = std::thread(&Set::init_mandelbrot_for_region, this, start, start+batch_size);
+            break;
+        
+        default:
+            break;
+        }
+    }
+    init_mandelbrot_for_region(nb_threads * batch_size, nb_threads * batch_size + batch_remainder);
+
+    std::for_each(my_threads.begin(), my_threads.end(), std::mem_fn(&std::thread::join));
 }
 
-Set::Set(int min_x, int max_x, int min_y, int max_y, double d_x, double d_y)
+Set::~Set()
 {
-    this->min_x = min_x;
-    this->max_x = max_x;
-    this->min_y = min_y;
-    this->max_y = max_y;
-    this->d_x = d_x;
-    this->d_y = d_y;
-    this->height = (max_y - min_y) / d_y + 1;
-    this->width = (max_x - min_x) / d_x + 1;
-    this->buffer = new unsigned char[height * width];
-    memset(this->buffer, 0, height * width);
-    
-    switch (this->set)
-    {
-    case Mandelbrot:
-        init_mandelbrot();
-        break;
-    case Serpinski:
-        break;
-    default:
-        break;
+    if(this->buffer != nullptr) {
+        free(this->buffer);
+    }
+}
+
+Set::Set(int x, int y, int width, int height) : Component(x, y, width, height)
+{
+    if(this->buffer == nullptr) {
+        this->buffer = (unsigned char*)malloc(width * height * sizeof(unsigned char));
     }
 }
 
 void Set::init_mandelbrot()
 {
+}
 
-    for (int i = 0; i < height; i++)
+
+void Set::init_mandelbrot_for_region(int start, int end) {
+    double min_x = this->params.min_x;
+    double min_y = this->params.min_y;
+    double d_x = this->params.d_x;
+    double d_y = this->params.d_y;
+
+    for (int l = start; l < end; l++)
     {
-        for (int j = 0; j < width; j++)
+        double x = min_x + (l % width) * d_x;
+        double y = min_y + l / width * d_y;
+        double z_x = 0.0;
+        double z_y = 0.0;
+        int k = 0;
+        while (k < 255)
         {
-            double x = min_x + j * d_x;
-            double y = min_y + i * d_y;
-            double z_x = 0.0;
-            double z_y = 0.0;
-            int k = 0;
-            while (k < 255)
+            double z_x_new = z_x * z_x - z_y * z_y + x;
+            double z_y_new = 2 * z_x * z_y + y;
+            if (z_x_new * z_x_new + z_y_new * z_y_new > 4)
             {
-                double z_x_new = z_x * z_x - z_y * z_y + x;
-                double z_y_new = 2 * z_x * z_y + y;
-                if (z_x_new * z_x_new + z_y_new * z_y_new > 4)
-                {
-                    break;
-                }
-                z_x = z_x_new;
-                z_y = z_y_new;
-                k++;
+                break;
             }
-            this->buffer[i * width + j] = k;
+            z_x = z_x_new;
+            z_y = z_y_new;
+            k++;
         }
+        this->buffer[(l % width) * width + l / width] = k;
     }
 }
 
@@ -67,36 +92,6 @@ void Set::render()
     {
         this->render_handler_set(this);
     }
-}
-
-int Set::get_min_x() const
-{
-    return min_x;
-}
-
-int Set::get_max_x() const
-{
-    return max_x;
-}
-
-int Set::get_min_y() const
-{
-    return min_y;
-}
-
-int Set::get_max_y() const
-{
-    return max_y;
-}
-
-double Set::get_dx() const
-{
-    return d_x;
-}
-
-double Set::get_dy() const
-{
-    return d_y;
 }
 
 const unsigned char* Set::get_buffer() const

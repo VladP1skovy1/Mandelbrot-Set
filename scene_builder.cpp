@@ -157,27 +157,38 @@ Scene* SceneBuilder::create_change_set_scene(){
 
 Scene* SceneBuilder::create_main_scene(){
     Scene* scene = new Scene();
-    Set* set = new Set((SETS)shared_data.set);
+    Set* set = new Set(0, 0, 480, 320);
+    set_data.refresh();
+    set->update();
     scene->add_component(set);
     scene->set_press_handler([](int knob){
         if(knob == 0) {
+            shared_data.led_fired = 0;
             shared_data.scene = MENU;
         }
     });
     
-    scene->set_turn_handler([](int knob, int old_value, int new_value){
-        switch(knob) {
-            case 0:
-                set_data.trans_x = ((float)new_value / 255) * 50; 
-                break;
-            case 1:
-                set_data.trans_y = ((float)new_value / 255) * 50; 
-                break;
-            case 2:
-                set_data.zoom = ((float)new_value / 255) / 2 + 0.25;
-                break;
+    scene->set_dir_turn_handler([](int knob, int dir) {
+        shared_data.set_params_changed = 1;
+        switch (knob)
+        {
+        case 0:
+            printf("Knob 0 turned %d\n", dir);
+            set_data.min_x += set_data.d_x * dir * 20;
+            break;
+        case 1:
+            printf("Knob 1 turned %d\n", dir);
+            set_data.min_y += set_data.d_y * dir * 20;
+            break;
+        case 2:
+            printf("Knob 2 turned %d\n", dir);
+            set_data.d_x *= (dir > 0 ? 1.1 : 0.9);
+            set_data.d_y *= (dir > 0 ? 1.1 : 0.9);
+            break;
+        
+        default:
+            break;
         }
-        shared_data.led_fired = (32 - new_value / 8);
     });
     return scene;
 }

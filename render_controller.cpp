@@ -114,44 +114,26 @@ void RenderController::render_label(Component* comp)
 }
 
 void RenderController::render_set(Component* comp) {
-    printf("Rendering set\n");
     Set* set = dynamic_cast<Set*>(comp);
     RenderController* ren_con = RenderController::get_instance();
-    // x amplitude of the set
-    float a_x = set->get_max_x() - set->get_min_x();
-    float min_x = set->get_min_x();
-    float max_x = set->get_max_x();
-    // y amplitude of the set
-    float a_y = set->get_max_y() - set->get_min_y();
-    float x_ratio = ((float)set->get_width()- (1 - set_data.zoom) * set->get_width() / 2) / ren_con->width;
-    float y_ratio = ((float)set->get_height()- (1 - set_data.zoom) * set->get_width() / 2) / ren_con->height;
-    int start_x = (1 - set_data.zoom) * set->get_width() / 4 + set_data.trans_x * x_ratio;
-    int start_y = (1 - set_data.zoom) * set->get_height() / 4 + set_data.trans_y * y_ratio;
-    float min_y = set->get_min_y();
-    float max_y = set->get_max_y();
-    int set_width = set->get_width();
-    const unsigned char* buffer = set->get_buffer();
-    float zoom = set_data.zoom;
-
-
-    for (int i = 0; i < ren_con->height; i++)
-    {
-        for (int j = 0; j < ren_con->width; j++)
-        {
-            int set_x = j * x_ratio + start_x;
-            int set_y = i * y_ratio + start_y;
-            int k = buffer[set_y * set_width + set_x];
-            if (k == 255)
-            {
-                ren_con->draw_pixel(j, i, 0x0000);
+    if(shared_data.set_params_changed) {
+        set->update();
+        shared_data.set_params_changed = false;
+    }
+    int width = set->get_width();
+    int height = set->get_height();
+    const unsigned char *buffer = set->get_buffer();
+    for (size_t i = 0; i < height; i++) {
+        for (size_t j = 0; j < width; j++) {
+            int k = buffer[i * width + j];
+            if (k == 255) {
+                ren_con->draw_pixel(j, i, 0);
             }
-            else
-            {
-                ren_con->draw_pixel(j, i, ((float)k / 255) * 0xFFFF);
+            else {
+                ren_con->draw_pixel(j, i, (k << 8) | (k << 4) | k);
             }
         }
     }
-
 }
 
 void RenderController::render()

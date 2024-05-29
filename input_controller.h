@@ -58,7 +58,6 @@ public:
     InputController();
     void update();
     void set_scene_manager(SceneManager *scene_manager);
-    void fire_leds(int n);
-    static InputController* GetInstance();
+    static InputController* get_instance();
 };
 

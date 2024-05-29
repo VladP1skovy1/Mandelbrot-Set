@@ -5,7 +5,7 @@ Scene::Scene(){
     shared_data.active_component_index = 0;
     this->active_component_index = 0;
     this->press_handler = nullptr;
-    this->turnHandler = nullptr;
+    this->turn_handler = nullptr;
 }
 void Scene::add_component(Component* comp){
     components.push_back(std::unique_ptr<Component>(comp));
@@ -41,9 +41,17 @@ void Scene::knob_pressed(int knob)
 
 void Scene::knob_turned(int knob, int old_value, int new_value)
 {
-    if (this->turnHandler != nullptr)
+    if (this->turn_handler != nullptr)
     {
-        this->turnHandler(knob, old_value, new_value);
+        this->turn_handler(knob, old_value, new_value);
+    }
+}
+
+void Scene::knob_turned_directed(int knob, int direction)
+{
+    if (this->dir_tur_handler != nullptr)
+    {
+        this->dir_tur_handler(knob, direction);
     }
 }
 
@@ -52,7 +60,12 @@ void Scene::set_press_handler(PressHandler clickHandler)
     this->press_handler = clickHandler;
 }
 
-void Scene::set_turn_handler(TurnHandler turnHandler)
+void Scene::set_turn_handler(TurnHandler turn_handler)
 {
-    this->turnHandler = turnHandler;
+    this->turn_handler = turn_handler;
+}
+
+void Scene::set_dir_turn_handler(TurnDirectedHandler dir_tur_handler)
+{
+    this->dir_tur_handler = dir_tur_handler;
 }
