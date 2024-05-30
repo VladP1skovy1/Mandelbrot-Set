@@ -20,6 +20,7 @@ private:
 
 public:
     // Constructors
+    using Component::Component;
 
     /**
      * @brief Constructor with position and size, and initial text.
@@ -44,6 +45,12 @@ public:
      * @param font_size New font size.
      */
     void set_font_size(uint16_t font_size);
+
+    /**
+     * @brief Set the render handler for the label.
+     * @param render_handler New render handler.
+     */
+    static void set_render_handler(void (*render_handler)(Component *));
 
     /**
      * @brief Set the active color of the label.
